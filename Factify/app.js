@@ -1,35 +1,33 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { sequelize } from "./models/index.js";
-import authRoutes from "./routes/auth.js";
+import sequelize from "./sequelize.js";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-app.use("/auth", authRoutes);
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// Start database og server
-const startServer = async () => {
+import authRoutes from "./routes/auth.js";
+
+app.use("/auth", authRoutes);
+
+app.get("/health", async (req, res) => {
+  console.log("Health endpoint was hit!"); // Debug-logg
   try {
-    await sequelize.sync(); // Opprett tabeller hvis de ikke finnes
-    console.log("Database synced!");
-
-    app.listen(3000, () => {
-      console.log("Server running on http://localhost:3000");
-    });
+    await sequelize.authenticate();
+    res.status(200).json({ message: "Database connection is active!" });
   } catch (error) {
-    console.error("Database connection failed:", error);
+    res
+      .status(500)
+      .json({ message: "Database connection failed", error: error.message });
   }
-};
-
-startServer();
+});
 
 export default app;

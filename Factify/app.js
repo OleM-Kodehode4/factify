@@ -23,7 +23,7 @@ app.use("/user", userRoutes);
 app.use("/facts", factRoutes);
 
 app.get("/health", async (req, res) => {
-  console.log("Health endpoint was hit!"); // Debug-logg
+  console.log("Health endpoint was hit!");
   try {
     await sequelize.authenticate();
     res.status(200).json({ message: "Database connection is active!" });

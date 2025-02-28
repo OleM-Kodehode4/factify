@@ -5,6 +5,9 @@
  */
 
 import app from "../app.js";
+import sequelize from "../sequelize.js";
+import "../models/User.js";
+import "../models/Fact.js";
 import debug from "debug";
 ("express:server");
 import http from "http";

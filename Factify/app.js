@@ -14,9 +14,13 @@ app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-import authRoutes from "./routes/auth.js";
+import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import factRoutes from "./routes/factRoutes.js";
 
 app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
+app.use("/facts", factRoutes);
 
 app.get("/health", async (req, res) => {
   console.log("Health endpoint was hit!"); // Debug-logg
